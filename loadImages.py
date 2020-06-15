@@ -12,6 +12,7 @@ def loadImg(file,mode=cv2.IMREAD_COLOR):
 
 def getImgHW(img):
     return img.shape[0],img.shape[1]  
+
 def getImgShape(img):
     return img.shape
 

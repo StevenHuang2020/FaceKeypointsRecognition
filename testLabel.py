@@ -5,6 +5,8 @@ import cv2
 import numpy as np 
 import argparse
 
+from genLabel import getLabelFileLabels
+
 def argCmdParse():
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--image', help = 'image')
@@ -52,6 +54,7 @@ def loadImg(file,mode=cv2.IMREAD_COLOR):
 def getImgHW(img):
     return img.shape[0],img.shape[1]
 
+'''
 def getLabelFileLabels(fileLabel):
     numbers = {'1','2','3','4','5','6','7','8','9'}
     labels = []
@@ -63,29 +66,40 @@ def getLabelFileLabels(fileLabel):
                 #print(pts)
                 labels.append((float(pts[0]),float(pts[1])))
     return labels
+'''
 
-def testFaceLabel(file,label):
-    pts = getLabelFileLabels(label)
+def testFaceLabel(file,label,locCod=False): #locCod coordinats or ratio
     img = loadImg(file)
     H,W = getImgHW(img)
+    pts = getLabelFileLabels(label)
+
+    if not locCod:
+        for pt in pts:
+            pt[0] = pt[0]*W
+            pt[1] = pt[1]*H
+    
     print(file,H,W,len(pts))
     img = drawPointImgFromPts(img,pts)
     return img
     
 def testFromDrawpt():
-    newBase = r'.\db\train\\'    
-    file = newBase + 'images\\' + '001A02.jpg'
-    label = newBase + 'labels\\' + '001A02.pts'
-    
-    file = r'.\afterTraining\res\\' + 'myface_gray.png'
-    label = r'.\afterTraining\res\\' + 'myface_gray.pts'
-    
+    if 0:
+        newBase = r'.\db\train\\'    
+        file = newBase + 'images\\' + '001A02.jpg'
+        label = newBase + 'labels\\' + '001A02.pts'
+    else:
+        # file = r'.\afterTraining\res\\' + 'myface_gray.png'
+        # label = r'.\afterTraining\res\\' + 'myface_gray.pts'
+        file = r'.\afterTraining\res\\' + '001A29.jpg'
+        label = r'.\afterTraining\res\\' + '001A29.pts' # 
+        
     print(file)
     print(label)
-    showimage(testFaceLabel(file,label))
+    showimage(testFaceLabel(file,label,False))
     
 def main():
-    #testFromDrawpt()
+    return testFromDrawpt()
+
     arg = argCmdParse()
     file = arg.image  #r'./res/myface_gray.png'
     label = arg.label
@@ -100,7 +114,7 @@ def main():
     
     if save:
         file = file[:file.rfind('.')]+'_label.png'
-        #print(file)
+        print(file)
         writeImg(img,file)
     
     

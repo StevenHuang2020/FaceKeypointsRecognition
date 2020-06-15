@@ -44,7 +44,7 @@ def getFileName(path):  #full fileName
     return os.path.basename(path)
 
 def getLabelFileLabels(fileLabel):
-    numbers = {'1','2','3','4','5','6','7','8','9'}
+    numbers = {'0','1','2','3','4','5','6','7','8','9'}
     labels = []
     with open(fileLabel,'r') as srcF:        
         for i in srcF.readlines():
@@ -52,7 +52,7 @@ def getLabelFileLabels(fileLabel):
                 #print(i)
                 pts = i.split(' ')
                 #print(pts)
-                labels.append((float(pts[0]),float(pts[1])))
+                labels.append([float(pts[0]),float(pts[1])])
     return labels
     
 def writeToDst(file,content):
@@ -62,7 +62,7 @@ def writeToDst(file,content):
 def writeAnotationFile(file,pts):
     deleteFile(file)
     for i in pts:
-        a,b = i
+        a,b = i[0],i[1]
         #print(i,a,b, str(a)+ ' ' + str(b))
         writeToDst(file,str(a) + ' ' + str(b) + '\n')
     
@@ -79,16 +79,17 @@ def sourceDatasetOper():
     
     createPath(dstPath)
     for i in pathsFiles(imgPath,'JPG'):
-        #print(i)
+        print(i)
+        img = loadImg(i)
+        
         fileName = getFileName(i)
         fileName = fileName[:fileName.rfind('.')] 
-        
         
         #writeToDst(fList,i+'\n')
         writeToDst(fList,'.\images\\' + fileName + '.jpg' + '\n')
         
         label = LabelPath + '\\' + fileName + '.pts'
-        pts = getLabelFileLabels(LabelPath)
+        pts = getLabelFileLabels(label)
         
         dstFile = dstPath + fileName + '.pts'
         print('dstFile=', dstFile)
@@ -111,9 +112,10 @@ def resizeImg(img,NewW,NewH,pts):
     
     newPts=[]
     for i in pts:
-        x,y = i
+        x,y = i[0],i[1]
         #newPts.append((round(x*NewW/w,4),round(y*NewH/h,4)))
-        newPts.append((x*NewW/w, y*NewH/h))
+        #newPts.append((x*NewW/w, y*NewH/h)) #use location  coordinates
+        newPts.append((x/w, y/h))  #use location/size ratio
     return rimg,newPts
 
 newW=364

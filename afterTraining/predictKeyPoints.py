@@ -38,7 +38,7 @@ def main():
     #return
 
     pts = model.predict(x)
-    #print('pts=',len(pts),pts.shape,pts)
+    print('pts=',len(pts),pts.shape,pts)
     pts = pts.reshape((68,2))
     print('pts=',len(pts),pts.shape,pts)
     

@@ -114,8 +114,8 @@ def main():
     checkpointer = ModelCheckpoint(filepath=checkpoint_filepath, verbose=1, save_best_only=False,save_freq=100)
         
     #model.fit(x_train, y_train, epochs=10, callbacks = [tensorboard_callback,checkpointer])
-    model.fit(x_train, y_train, batch_size=128, epochs=epoch, verbose=1, 
-              validation_data=(x_test, y_test),callbacks = [tensorboard_callback,checkpointer])
+    model.fit(x_train, y_train, epochs=epoch, verbose=1, batch_size=100,
+              validation_data=(x_test, y_test),callbacks = [tensorboard_callback,checkpointer]) #
     
     #score = model.evaluate(x_test, y_test, verbose=0)
     #print('Test loss:', score[0])
