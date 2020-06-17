@@ -6,6 +6,8 @@ from tensorflow.keras.layers import Dense, Dropout, Flatten
 from tensorflow.keras.layers import Conv2D, MaxPooling2D
 from tensorflow.keras import backend as K
 from tensorflow.keras.callbacks import ModelCheckpoint
+from sklearn.model_selection import train_test_split
+
 import argparse
 import datetime
 
@@ -20,15 +22,18 @@ def prepareData():
     print('Y.shape=',Y.shape)
     
     X = X.reshape(X.shape[0], img_rows, img_cols, 1)
-    
-    test_size=0.2
-    trainLen = int(len(X)*(1-test_size))
-    x_train = X[:trainLen]
-    y_train = Y[:trainLen]
-    x_test = X[trainLen:]
-    y_test = Y[trainLen:]
-    print('total:',len(X),len(Y),'train:',trainLen,'test:',len(X)-trainLen)
-    
+    if 0:
+        test_size=0.2
+        trainLen = int(len(X)*(1-test_size))
+        x_train = X[:trainLen]
+        y_train = Y[:trainLen]
+        x_test = X[trainLen:]
+        y_test = Y[trainLen:]
+        
+        print('total:',len(X),len(Y),'train:',trainLen,'test:',len(X)-trainLen)
+    else:
+        x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.3)
+        
     print('X_train.shape = ', x_train.shape)
     print('y_train.shape = ', y_train.shape)
     print('X_test.shape = ', x_test.shape)
