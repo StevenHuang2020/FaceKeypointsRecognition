@@ -9,9 +9,9 @@ import os,sys
 sys.path.append(r'.\afterTraining\\')
 
 from genLabel import getLabelFileLabels
-from afterTraining.predictKeyPoints import preditImg
-from afterTraining.commonModule.imagePlot import plotImagList
-from afterTraining.commonModule.ImageBase import changeBgr2Rbg
+from predictKeyPoints import preditImg
+from commonModule.imagePlot import plotImagList
+from commonModule.ImageBase import changeBgr2Rbg
 
 def argCmdParse():
     parser = argparse.ArgumentParser()
@@ -34,11 +34,10 @@ def showimage(img,str='image',autoSize=False):
 def writeImg(img,filePath):
     cv2.imwrite(filePath,img)
 
-def drawPointIndexImg(img, i,pt):
+def drawPointIndexImg(img, i,pt,color = (255, 0, 0),fontsize=0.6):
     font = cv2.FONT_HERSHEY_SIMPLEX 
     org =(int(pt[0]), int(pt[1]))
-    fontScale = 1
-    color = (255, 0, 0) 
+    fontScale = fontsize
     thickness = 1
     return cv2.putText(img, str(i), org, font, fontScale, color, thickness, cv2.LINE_AA) 
 
@@ -49,8 +48,14 @@ def drawPointImgFromPts(img,pts,color):
     for i,pt in enumerate(pts):
         img = drawPointImg(img,pt,color=color)
 
-        # if i%2:
-        #     img = drawPointIndexImg(img,i,pt)
+        #img = drawPointIndexImg(img,i,pt,fontsize=0.5)
+        if 1:
+            if i<27:
+                img = drawPointIndexImg(img,i,pt,fontsize=0.5)
+            elif i<48:
+                img = drawPointIndexImg(img,i-27,pt,color=(0,255,0),fontsize=0.5)
+            else:
+                img = drawPointIndexImg(img,i-47,pt,color=(0,255,255),fontsize=0.5)
     return img
  
 def loadImg(file,mode=cv2.IMREAD_COLOR):
@@ -76,11 +81,11 @@ def getLabelFileLabels(fileLabel):
 
 def testFaceLabelPredict(file):
     img = loadImg(file)
-    pts = preditImg(img,modelName=r'.\afterTraining\weights\trainFacialRecognition.h5')
+    pts = preditImg(img)
     #print(pts)
-    pts = pts.reshape((68,2))
+    #pts = pts.reshape((68,2))
     return testFaceLabelPts(img,pts)
-              
+
 def testFaceLabel(file,label,color=(0,0,255),locCod=False): #locCod coordinats or ratio
     img = loadImg(file)
     return testFaceLabelImg(img,label,color=color,locCod=locCod)
@@ -122,7 +127,7 @@ def testFromDrawpt():
         
     predictImg = changeBgr2Rbg(predictImg)
     trueImg = changeBgr2Rbg(trueImg)
-    c1Img = changeBgr2Rbg(c1Img)
+    c1Img = changeBgr2Rbg(c1Img) #true and predict overlap
     
     imgList,nameList = [],[]
     imgList.append(predictImg),nameList.append('Predict')
@@ -136,8 +141,22 @@ def testFromDrawpt():
     #showimage(c1Img)
     #showimage(trueImg)
     
+def drawPtsAndNumber():
+    file = r'.\afterTraining\res\\' + '001A29.jpg'
+    labelTrue = r'.\afterTraining\res\\' + '001A29_True2.pts'
+    
+    #file = r'.\afterTraining\res\\' + '009A22a.jpg'
+    #labelTrue = r'.\afterTraining\res\\' + '009A22a.pts'
+    
+    trueImg = testFaceLabel(file,labelTrue,locCod=False)
+    trueImg = changeBgr2Rbg(trueImg)
+    #showimage(trueImg)
+    imgList,nameList = [],[]
+    imgList.append(trueImg),nameList.append('trueImg')
+    plotImagList(imgList,nameList,showticks=False)
     
 def main():
+    return drawPtsAndNumber()
     return testFromDrawpt()
 
     arg = argCmdParse()

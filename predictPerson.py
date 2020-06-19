@@ -1,0 +1,52 @@
+import os,sys
+from commonModule.ImageBase import *
+from predictKeyPoints import *
+from makeDB import calculateFeature,getDb,distanceAB
+from testLabel import testFaceLabelPredict,showimage
+
+def argCmdParse():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-s', '--source', help = 'source image')
+    #parser.add_argument('-d', '--dst', help = 'save iamge')
+    return parser.parse_args()
+
+def predictPerson(feature):
+    df = getDb()
+    print(df.head())
+    #allFeatures = df.iloc[:,1:].values
+    #print('allFeatures.shape=',allFeatures.shape)
+    allDistance=[]
+    allIds = []
+    for i in range(df.shape[0]):
+        id = df.iloc[i,0]
+        i = df.iloc[i,1:].values
+        #print(id,i)
+        allIds.append(id)
+        
+        dis = distanceAB(i,feature)
+        #print('dis=',dis)
+        allDistance.append(dis)
+
+    #print('allDistance=',allDistance)
+    disMin = min(allDistance)
+    minIndex = allDistance.index(disMin)
+    print('disMin=',disMin,'minIndex=',minIndex,'id=',allIds[minIndex])
+    
+    
+def main():
+    arg = argCmdParse()    
+    file = r'./res/001A29.jpg' #arg.source  #
+    
+    img = loadImg(file)
+    H,W = getImgHW(img)
+    pts = preditImg(img)
+    #print('pts=',len(pts),pts.shape,pts)
+
+    showimage(testFaceLabelPredict(file))
+    
+    feature = calculateFeature(pts,H,W)
+    print('feature=',len(feature),feature)
+    predictPerson(feature)
+    
+if __name__=='__main__':
+    main()
