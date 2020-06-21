@@ -19,7 +19,11 @@ def argCmdParse():
 def preditImg(img, modelName = r'./weights/trainFacialRecognition.h5'): # #r'./weightLoc/trainFacialRecognition.h5'
     model = ks.models.load_model(modelName)
     print(img.shape)
-    x = img[:,:,0]
+    if getImagChannel(img) == 3:
+        x = img[:,:,0]
+    else:
+        x = img
+        
     print(x.shape)
     x = x.reshape((1,x.shape[0],x.shape[1],1))
     print(x.shape)

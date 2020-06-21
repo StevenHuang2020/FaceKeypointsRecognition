@@ -5,8 +5,9 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 def changeBgr2Rbg(img): #input color img
-    b,g,r = cv2.split(img)       # get b,g,r
-    img = cv2.merge([r,g,b])
+    if getImagChannel(img) == 3:
+        b,g,r = cv2.split(img)       # get b,g,r
+        img = cv2.merge([r,g,b])
     return img
 
 def loadImg(file,mode=cv2.IMREAD_COLOR):

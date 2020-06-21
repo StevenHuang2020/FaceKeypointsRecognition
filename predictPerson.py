@@ -36,7 +36,7 @@ def predictPerson(feature):
     
 def main():
     arg = argCmdParse()    
-    file = r'./res/001A29_ex2.jpg' #r'./res/001A29.jpg' #arg.source  #
+    file = r'./res/myface_.png'  #r'./res/001A29_ex2.jpg' #r'./res/001A29.jpg' #arg.source  #
     
     img = loadImg(file)
     img = resizeImg(img,newW,newH)

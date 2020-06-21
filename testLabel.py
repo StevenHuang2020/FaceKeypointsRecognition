@@ -11,7 +11,7 @@ sys.path.append(r'.\afterTraining\\')
 from genLabel import getLabelFileLabels
 from predictKeyPoints import preditImg
 from commonModule.imagePlot import plotImagList
-from commonModule.ImageBase import changeBgr2Rbg
+from commonModule.ImageBase import changeBgr2Rbg,grayImg,loadImg,getImgHW,writeImg,showimage
 from makeDB import UpdatePtsToLocation
 
 def argCmdParse():
@@ -21,7 +21,8 @@ def argCmdParse():
     parser.add_argument('-s', '--save', action="store_true", help = 'save label image')
     
     return parser.parse_args()
-     
+  
+'''   
 def showimage(img,str='image',autoSize=True):
     flag = cv2.WINDOW_NORMAL
     if autoSize:
@@ -34,6 +35,15 @@ def showimage(img,str='image',autoSize=True):
 
 def writeImg(img,filePath):
     cv2.imwrite(filePath,img)
+    
+def loadImg(file,mode=cv2.IMREAD_COLOR):
+    #mode = cv2.IMREAD_COLOR cv2.IMREAD_GRAYSCALE cv2.IMREAD_UNCHANGED
+    return cv2.imread(file,mode)
+
+def getImgHW(img):
+    return img.shape[0],img.shape[1]
+    
+'''
 
 def drawPointIndexImg(img, i,pt,color = (255, 0, 0),fontsize=0.6):
     font = cv2.FONT_HERSHEY_SIMPLEX 
@@ -49,7 +59,7 @@ def drawPointImgFromPts(img,pts,color):
     for i,pt in enumerate(pts):
         img = drawPointImg(img,pt,color=color)
 
-        #img = drawPointIndexImg(img,i,pt,fontsize=0.5)
+        #img = drawPointIndexImg(img,i,pt,fontsize=0.4)
         if 0:
             if i<27:
                 img = drawPointIndexImg(img,i,pt,fontsize=0.5)
@@ -58,13 +68,7 @@ def drawPointImgFromPts(img,pts,color):
             else:
                 img = drawPointIndexImg(img,i-47,pt,color=(0,255,255),fontsize=0.5)
     return img
- 
-def loadImg(file,mode=cv2.IMREAD_COLOR):
-    #mode = cv2.IMREAD_COLOR cv2.IMREAD_GRAYSCALE cv2.IMREAD_UNCHANGED
-    return cv2.imread(file,mode)
 
-def getImgHW(img):
-    return img.shape[0],img.shape[1]
 
 '''
 def getLabelFileLabels(fileLabel):
@@ -82,13 +86,17 @@ def getLabelFileLabels(fileLabel):
 
 def testFaceLabelPredict(file):
     img = loadImg(file)
+    #img=grayImg(img)
+    
     pts = preditImg(img)
     print(type(pts),pts)
     #pts = pts.reshape((68,2))
     return testFaceLabelPts(img,pts)
 
-def testFaceLabel(file,label,color=(0,0,255),locCod=False): #locCod coordinats or ratio
+def testFaceLabel(file,label,color=(0,0,255),locCod=False,gray=False): #locCod coordinats or ratio
     img = loadImg(file)
+    if gray:
+        img=grayImg(img)
     return testFaceLabelImg(img,label,color=color,locCod=locCod)
 
 def testFaceLabelImg(img,label,color,locCod=False): #locCod coordinats or ratio
@@ -107,11 +115,46 @@ def testFaceLabelPts(img,pts,color=(0,0,255),locCod=False):
     img = drawPointImgFromPts(img,pts,color)
     return img
 
+def showPredictImage():
+    file1 = r'.\res\\' + '001A29.jpg'
+    label1 = r'.\res\\' + '001A29.pts' 
+    file2 = r'.\res\\' + '003A25.jpg'
+    label2 = r'.\res\\' + '003A25.pts' 
+    
+    predictImg1 = testFaceLabelPredict(file1)
+    trueImg1 = testFaceLabel(file1,label1,locCod=False)
+    c1Img = testFaceLabelImg(predictImg1.copy(),label1,locCod=False,color=(255,0,0))
+    c1Img = changeBgr2Rbg(c1Img)
+    
+    predictImg2 = testFaceLabelPredict(file2)
+    trueImg2 = testFaceLabel(file2,label2,locCod=False)
+    c2Img = testFaceLabelImg(predictImg2.copy(),label2,locCod=False,color=(255,0,0))
+    c2Img = changeBgr2Rbg(c2Img)
+    
+    imgList,nameList = [],[]
+    imgList.append(c1Img),nameList.append('c1Img')
+    imgList.append(c2Img),nameList.append('c2Img')
+    plotImagList(imgList,nameList,showticks=False,showTitle=False)
+    
+def showPredictOutdatasetImage():
+    file1 = r'.\res\\' + 'Lenna.png'
+    file2 = r'.\res\\' + 'obama.png' #obama.png
+    
+    predictImg1 = testFaceLabelPredict(file1)   
+    predictImg2 = testFaceLabelPredict(file2)
+    predictImg1 = changeBgr2Rbg(predictImg1)
+    predictImg2 = changeBgr2Rbg(predictImg2)
+    
+    imgList,nameList = [],[]
+    imgList.append(predictImg1),nameList.append('predictImg1')
+    imgList.append(predictImg2),nameList.append('predictImg2')
+    plotImagList(imgList,nameList,showticks=False,showTitle=False)
+    
 def testFromDrawpt():
     if 0:
         newBase = r'.\db\train\\'    
-        file = newBase + 'images\\' + '001A02.jpg'
-        label = newBase + 'labels\\' + '001A02.pts'
+        file = newBase + 'images\\' + '006A31.jpg'
+        label = newBase + 'labels\\' + '006A31.pts'
     else:
         # file = r'.\res\\' + 'myface_gray.png'
         # label = r'.\res\\' + 'myface_gray.pts'
@@ -144,18 +187,23 @@ def testFromDrawpt():
     #showimage(trueImg)
     
 def drawPtsAndNumber():
-    file = r'.\afterTraining\res\\' + '001A29.jpg'
-    labelTrue = r'.\afterTraining\res\\' + '001A29_True2.pts'
+    file = r'.\res\\' + '030A26.jpg'
+    labelTrue = r'.\res\\' + '030A26.pts'
     
-    #file = r'.\afterTraining\res\\' + '009A22a.jpg'
-    #labelTrue = r'.\afterTraining\res\\' + '009A22a.pts'
+    file2 = r'.\res\\' + '082A31.jpg'
+    labelTrue2 = r'.\res\\' + '082A31.pts'
     
     trueImg = testFaceLabel(file,labelTrue,locCod=False)
     trueImg = changeBgr2Rbg(trueImg)
+ 
+    trueImg2 = testFaceLabel(file2,labelTrue2,locCod=False)
+    trueImg2 = changeBgr2Rbg(trueImg2)
+
     #showimage(trueImg)
     imgList,nameList = [],[]
     imgList.append(trueImg),nameList.append('trueImg')
-    plotImagList(imgList,nameList,showticks=False)
+    imgList.append(trueImg2),nameList.append('trueImg2')
+    plotImagList(imgList,nameList,showticks=False, showTitle=False)
     
 def showRawPictures():
     file1 = r'.\res\\' + '006A31.jpg'
@@ -183,10 +231,11 @@ def showRawPictures():
     
     
 def main():
+    return showPredictOutdatasetImage()
     #return showRawPictures()
-
+    return showPredictImage()
     #return drawPtsAndNumber()
-    return testFromDrawpt()
+    #return testFromDrawpt()
 
     arg = argCmdParse()
     file = arg.image  #r'./res/myface_gray.png'
