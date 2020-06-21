@@ -19,31 +19,7 @@ def argCmdParse():
     parser.add_argument('-i', '--image', help = 'image')
     parser.add_argument('-l', '--label', help = 'iamge pts label file')
     parser.add_argument('-s', '--save', action="store_true", help = 'save label image')
-    
     return parser.parse_args()
-  
-'''   
-def showimage(img,str='image',autoSize=True):
-    flag = cv2.WINDOW_NORMAL
-    if autoSize:
-        flag = cv2.WINDOW_AUTOSIZE
-
-    cv2.namedWindow(str, flag)
-    cv2.imshow(str,img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
-def writeImg(img,filePath):
-    cv2.imwrite(filePath,img)
-    
-def loadImg(file,mode=cv2.IMREAD_COLOR):
-    #mode = cv2.IMREAD_COLOR cv2.IMREAD_GRAYSCALE cv2.IMREAD_UNCHANGED
-    return cv2.imread(file,mode)
-
-def getImgHW(img):
-    return img.shape[0],img.shape[1]
-    
-'''
 
 def drawPointIndexImg(img, i,pt,color = (255, 0, 0),fontsize=0.6):
     font = cv2.FONT_HERSHEY_SIMPLEX 

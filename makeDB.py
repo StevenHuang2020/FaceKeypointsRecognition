@@ -5,8 +5,6 @@ import pandas as pd
 from genLabel import loadImg,getImgHW,getFileName,getLabelFileLabels,pathsFiles,writeAnotationFile
 
 def distanceAB(a,b):
-    #print('a.shape=',a.shape)
-    #print('b.shape=',b.shape)
     return np.sqrt(np.sum((a-b)**2))
     #return np.sqrt(np.sum(np.abs(a-b)))
 
@@ -27,11 +25,6 @@ def UpdatePtsToLocation(pts,H,W):
 def calculateFeature(pts,H,W,file=r'test.pts'):
     pts = UpdatePtsToLocation(pts,H,W)
     
-    if 0:
-        for i in range(len(pts)):
-            #print(pts[i][0],pts[i][1])
-            pts[i][0] = pts[i][0]*W
-            pts[i][1] = pts[i][1]*H
     #print(pts)
     
     writeAnotationFile(file,pts)
@@ -58,23 +51,15 @@ def calculateFeature(pts,H,W,file=r'test.pts'):
     F_EyeFissure  = calculateRatio(pts,28,30,27,29)
     F_VermilionHeight = calculateRatio(pts,51,66,66,57)
     F_MouthFaceWidth = calculateRatio(pts,48,54,0,14)
-    # F_Noise1 = calculateRatio(pts,39,46,39,41)
-    # F_Noise2 = calculateRatio(pts,39,40,39,41)
-    # F_Noise3 = calculateRatio(pts,39,38,39,41)
-    # F_Noise4 = calculateRatio(pts,39,38,67,41)
-    # F_Noise5 = calculateRatio(pts,39,41,67,41)
+    F_Noise1 = calculateRatio(pts,39,46,39,41)
+    F_Noise2 = calculateRatio(pts,39,40,39,41)
+    F_Noise3 = calculateRatio(pts,39,38,39,41)
+    F_Noise4 = calculateRatio(pts,39,38,67,41)
+    F_Noise5 = calculateRatio(pts,39,41,67,41)
     #print('name:',name,'Features=',F_Facial_Index,F_Mandibular_Index,F_Intercanthal,F_OrbitalWidth,F_EyeFissure,F_VermilionHeight,F_MouthFaceWidth,F_Noise1,F_Noise2,F_Noise3,F_Noise4,F_Noise5)
     
-    #return [F_Facial_Index,F_Mandibular_Index,F_Intercanthal,F_OrbitalWidth,F_EyeFissure,F_VermilionHeight,F_MouthFaceWidth,F_Noise1,F_Noise2,F_Noise3,F_Noise4,F_Noise5]
-    return [F_Facial_Index,F_Mandibular_Index,F_Intercanthal,F_OrbitalWidth,F_EyeFissure,F_VermilionHeight,F_MouthFaceWidth]
+    return [F_Facial_Index,F_Mandibular_Index,F_Intercanthal,F_OrbitalWidth,F_EyeFissure,F_VermilionHeight,F_MouthFaceWidth,F_Noise1,F_Noise2,F_Noise3,F_Noise4,F_Noise5]
 
-    # data = {'F_Facial_Index':F_Facial_Index, 'F_Mandibular_Index':F_Mandibular_Index,
-    #         'F_Intercanthal':F_Intercanthal,'F_OrbitalWidth':F_OrbitalWidth,'F_EyeFissure':F_EyeFissure,
-    #         'F_VermilionHeight':F_VermilionHeight,'F_MouthFaceWidth':F_MouthFaceWidth,'F_Noise1':F_Noise1,
-    #         'F_Noise2':F_Noise2,'F_Noise3':F_Noise3,'F_Noise4':F_Noise4,'F_Noise5':F_Noise5}
-    # #df = pd.DataFrame(data=data,index=[0])
-    # #print(df)
-    # return data
 
 dbFile = r'.\db\facial.csv'
 def makeDb():

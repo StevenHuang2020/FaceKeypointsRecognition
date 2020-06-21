@@ -3,9 +3,8 @@ import cv2
 import tensorflow.keras as ks
 from testLabel import testFaceLabelPts
 from faceIdentification import CascadeDetect
+from genLabel import newW,newH
 
-newW=364
-newH=440
 
 def getImgHW(img):
     return img.shape[0],img.shape[1]
