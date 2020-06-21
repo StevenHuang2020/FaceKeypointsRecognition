@@ -16,6 +16,9 @@ def resizeImg(img,NewW,NewH):
     #return cv2.resize(img, (int(h*ratio), int(w*ratio)), interpolation=cv2.INTER_CUBIC) #INTER_LANCZOS4
     return cv2.resize(img, (NewW,NewH), interpolation=cv2.INTER_CUBIC) #INTER_CUBIC INTER_NEAREST INTER_LINEAR INTER_AREA
 
+def CascadeDetect(cascPath=r'./res/haarcascade_frontalface_default.xml'):
+    return CascadeClassifier(cascPath)
+
 def main():
     cv2.useOptimized()
     file =  r'./res/obama.jpg'#r'./res/Lenna.png' #
@@ -25,11 +28,10 @@ def main():
     if len(sys.argv)>1:
         file = sys.argv[1]
 
-    cascPath=r'./res/haarcascade_frontalface_default.xml'
 
     img = loadImg(file,mode=cv2.IMREAD_COLOR) # IMREAD_GRAYSCALE IMREAD_COLOR
 
-    faceROI = CascadeClassifier(cascPath)
+    faceROI = CascadeDetect()
  
     faceR=faceROI.getDetectImg(img)
     face = faceROI.detecvFaceImgOne(img)
@@ -43,9 +45,9 @@ def main():
 
     plotImagList(ls,names)
 
-    faceGray = resizeImg(faceGray,newW,newH)
+    #faceGray = resizeImg(faceGray,newW,newH)
     #img.writeImg(face,'./res/myface_.png')
-    writeImg(faceGray,'./res/myface_gray.png')
+    #writeImg(faceGray,'./res/myface_gray.png')
 
 if __name__=="__main__":
     main()

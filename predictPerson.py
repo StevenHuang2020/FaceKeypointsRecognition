@@ -2,7 +2,8 @@ import os,sys
 from commonModule.ImageBase import *
 from predictKeyPoints import *
 from makeDB import calculateFeature,getDb,distanceAB
-from testLabel import testFaceLabelPredict,showimage
+from testLabel import testFaceLabelPredict,showimage,testFaceLabelPts
+from genLabel import newW,newH
 
 def argCmdParse():
     parser = argparse.ArgumentParser()
@@ -35,16 +36,21 @@ def predictPerson(feature):
     
 def main():
     arg = argCmdParse()    
-    file = r'./res/001A29.jpg' #arg.source  #
+    file = r'./res/001A29_ex2.jpg' #r'./res/001A29.jpg' #arg.source  #
     
     img = loadImg(file)
+    img = resizeImg(img,newW,newH)
+    
     H,W = getImgHW(img)
     pts = preditImg(img)
-    #print('pts=',len(pts),pts.shape,pts)
-
-    showimage(testFaceLabelPredict(file))
+    print('pts=',len(pts),pts.shape,'H,W=',H,W)
+    print('pts=',pts)
     
-    feature = calculateFeature(pts,H,W)
+    showimage(testFaceLabelPts(img,pts,locCod=False))
+    if 1:
+        feature = np.array(calculateFeature(pts,H,W,'predict.pts'))
+    else:
+        feature = pts.reshape(1,136)
     print('feature=',len(feature),feature)
     predictPerson(feature)
     

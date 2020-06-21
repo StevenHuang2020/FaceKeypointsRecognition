@@ -38,17 +38,17 @@ class CascadeClassifier:
 
     def getDetectImg(self,image):
         faces = self.detecvFace(image)
-        print("Found {0} faces!".format(len(faces)))
+        #print("Found {0} faces!".format(len(faces)))
         newImg = image.copy() 
         for (x, y, w, h) in faces:
-            print(x, y, w, h)
+            #print(x, y, w, h)
             cv2.rectangle(newImg, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
         return newImg
 
     def showDetectImg(self,image):
         faces = self.detecvFace(image)
-        print("Found {0} faces!".format(len(faces)))
+        #print("Found {0} faces!".format(len(faces)))
 
         # Draw a rectangle around the faces
         for (x, y, w, h) in faces:

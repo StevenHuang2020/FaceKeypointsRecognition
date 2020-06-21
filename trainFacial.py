@@ -71,7 +71,6 @@ def createModel(input_shape,ptSize=68):
     model.add(Dropout(0.1))
     model.add(Dense(256, activation='relu'))
     model.add(Dropout(0.1))
-    #model.add(Dense(num_classes, activation='softmax'))
     model.add(Dense(ptSize*2))
     
     lr = 0.0001

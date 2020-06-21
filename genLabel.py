@@ -114,8 +114,10 @@ def resizeImg(img,NewW,NewH,pts):
     for i in pts:
         x,y = i[0],i[1]
         #newPts.append((round(x*NewW/w,4),round(y*NewH/h,4)))
-        #newPts.append((x*NewW/w, y*NewH/h)) #use location  coordinates
-        newPts.append((x/w, y/h))  #use location/size ratio
+        if 0:
+            newPts.append((x*NewW/w, y*NewH/h)) #use location  coordinates
+        else:
+            newPts.append((x/w, y/h))  #use location/size ratio
     return rimg,newPts
 
 newW=364

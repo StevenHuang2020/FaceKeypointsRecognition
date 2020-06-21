@@ -16,7 +16,7 @@ def argCmdParse():
     
     return parser.parse_args()
 
-def preditImg(img, modelName = r'./weights/trainFacialRecognition.h5'):
+def preditImg(img, modelName = r'./weights/trainFacialRecognition.h5'): # #r'./weightLoc/trainFacialRecognition.h5'
     model = ks.models.load_model(modelName)
     print(img.shape)
     x = img[:,:,0]
@@ -25,6 +25,7 @@ def preditImg(img, modelName = r'./weights/trainFacialRecognition.h5'):
     print(x.shape)
     pts = model.predict(x)
     pts = pts.reshape((68,2))
+    print('preditImg pts.shape=',type(pts),pts.shape)
     return pts
 
 def main():

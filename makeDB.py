@@ -2,10 +2,13 @@ import sys,os
 import cv2
 import numpy as np 
 import pandas as pd
-from genLabel import loadImg,getImgHW,getFileName,getLabelFileLabels,pathsFiles
+from genLabel import loadImg,getImgHW,getFileName,getLabelFileLabels,pathsFiles,writeAnotationFile
 
 def distanceAB(a,b):
+    #print('a.shape=',a.shape)
+    #print('b.shape=',b.shape)
     return np.sqrt(np.sum((a-b)**2))
+    #return np.sqrt(np.sum(np.abs(a-b)))
 
 def calculateRatio(pts,id1,id2,id3,id4):
     assert(id1<len(pts))
@@ -14,12 +17,24 @@ def calculateRatio(pts,id1,id2,id3,id4):
     assert(id4<len(pts))
     return distanceAB(pts[id1], pts[id2])/distanceAB(pts[id3],pts[id4])
 
-def calculateFeature(pts,H,W):
+def UpdatePtsToLocation(pts,H,W):
     for i in range(len(pts)):
         #print(pts[i][0],pts[i][1])
         pts[i][0] = pts[i][0]*W
         pts[i][1] = pts[i][1]*H
+    return pts
+
+def calculateFeature(pts,H,W,file=r'test.pts'):
+    pts = UpdatePtsToLocation(pts,H,W)
+    
+    if 0:
+        for i in range(len(pts)):
+            #print(pts[i][0],pts[i][1])
+            pts[i][0] = pts[i][0]*W
+            pts[i][1] = pts[i][1]*H
     #print(pts)
+    
+    writeAnotationFile(file,pts)
     pts = np.array(pts)
     #print(pts.shape)
     
@@ -43,22 +58,23 @@ def calculateFeature(pts,H,W):
     F_EyeFissure  = calculateRatio(pts,28,30,27,29)
     F_VermilionHeight = calculateRatio(pts,51,66,66,57)
     F_MouthFaceWidth = calculateRatio(pts,48,54,0,14)
-    F_Noise1 = calculateRatio(pts,39,46,39,41)
-    F_Noise2 = calculateRatio(pts,39,40,39,41)
-    F_Noise3 = calculateRatio(pts,39,38,39,41)
-    F_Noise4 = calculateRatio(pts,39,38,67,41)
-    F_Noise5 = calculateRatio(pts,39,41,67,41)
+    # F_Noise1 = calculateRatio(pts,39,46,39,41)
+    # F_Noise2 = calculateRatio(pts,39,40,39,41)
+    # F_Noise3 = calculateRatio(pts,39,38,39,41)
+    # F_Noise4 = calculateRatio(pts,39,38,67,41)
+    # F_Noise5 = calculateRatio(pts,39,41,67,41)
     #print('name:',name,'Features=',F_Facial_Index,F_Mandibular_Index,F_Intercanthal,F_OrbitalWidth,F_EyeFissure,F_VermilionHeight,F_MouthFaceWidth,F_Noise1,F_Noise2,F_Noise3,F_Noise4,F_Noise5)
     
-    return [F_Facial_Index,F_Mandibular_Index,F_Intercanthal,F_OrbitalWidth,F_EyeFissure,F_VermilionHeight,F_MouthFaceWidth,F_Noise1,F_Noise2,F_Noise3,F_Noise4,F_Noise5]
+    #return [F_Facial_Index,F_Mandibular_Index,F_Intercanthal,F_OrbitalWidth,F_EyeFissure,F_VermilionHeight,F_MouthFaceWidth,F_Noise1,F_Noise2,F_Noise3,F_Noise4,F_Noise5]
+    return [F_Facial_Index,F_Mandibular_Index,F_Intercanthal,F_OrbitalWidth,F_EyeFissure,F_VermilionHeight,F_MouthFaceWidth]
 
-    data = {'F_Facial_Index':F_Facial_Index, 'F_Mandibular_Index':F_Mandibular_Index,
-            'F_Intercanthal':F_Intercanthal,'F_OrbitalWidth':F_OrbitalWidth,'F_EyeFissure':F_EyeFissure,
-            'F_VermilionHeight':F_VermilionHeight,'F_MouthFaceWidth':F_MouthFaceWidth,'F_Noise1':F_Noise1,
-            'F_Noise2':F_Noise2,'F_Noise3':F_Noise3,'F_Noise4':F_Noise4,'F_Noise5':F_Noise5}
-    #df = pd.DataFrame(data=data,index=[0])
-    #print(df)
-    return data
+    # data = {'F_Facial_Index':F_Facial_Index, 'F_Mandibular_Index':F_Mandibular_Index,
+    #         'F_Intercanthal':F_Intercanthal,'F_OrbitalWidth':F_OrbitalWidth,'F_EyeFissure':F_EyeFissure,
+    #         'F_VermilionHeight':F_VermilionHeight,'F_MouthFaceWidth':F_MouthFaceWidth,'F_Noise1':F_Noise1,
+    #         'F_Noise2':F_Noise2,'F_Noise3':F_Noise3,'F_Noise4':F_Noise4,'F_Noise5':F_Noise5}
+    # #df = pd.DataFrame(data=data,index=[0])
+    # #print(df)
+    # return data
 
 dbFile = r'.\db\facial.csv'
 def makeDb():
@@ -67,11 +83,10 @@ def makeDb():
     imgPath = base + r'\images'
     LabelPath = base + r'\labels'
     
+    imgPath = r'E:\opencv\project\facialRecognition\db\recognitionDb'
     df = pd.DataFrame()
-    columns = ['F_Facial_Index', 'F_Mandibular_Index', 'F_Intercanthal',
-       'F_OrbitalWidth', 'F_EyeFissure', 'F_VermilionHeight',
-       'F_MouthFaceWidth', 'F_Noise1', 'F_Noise2', 'F_Noise3', 'F_Noise4',
-       'F_Noise5']
+    #columns = ['F_Facial_Index', 'F_Mandibular_Index', 'F_Intercanthal','F_OrbitalWidth', 'F_EyeFissure', 'F_VermilionHeight','F_MouthFaceWidth', 'F_Noise1', 'F_Noise2', 'F_Noise3', 'F_Noise4','F_Noise5']
+    columns = ['F_Facial_Index', 'F_Mandibular_Index', 'F_Intercanthal','F_OrbitalWidth', 'F_EyeFissure', 'F_VermilionHeight','F_MouthFaceWidth']
     
     for i in pathsFiles(imgPath,'jpg'):
         #print(i)
@@ -83,10 +98,16 @@ def makeDb():
         label = LabelPath + '\\' + fileName + '.pts'
         pts = getLabelFileLabels(label)
         
-        print(fileName,'label=', label,'pts=', len(pts))
-        data = calculateFeature(pts,H,W)
-        data = np.array(data).reshape(-1,len(data))
-        line = pd.DataFrame(data,columns=columns)
+        pts = np.reshape(pts,(68,2))
+        print(fileName,'label=', label,'pts=', len(pts),'H,W=',H,W)
+        if 1:
+            data = calculateFeature(pts,H,W)
+            data = np.array(data).reshape(-1,len(data))
+            line = pd.DataFrame(data,columns=columns)
+        else:
+            pts = pts.reshape(1,136)
+            line = pd.DataFrame(pts)
+            
         line.insert(0, "Id", fileName, True)
         
         df = df.append(line)
