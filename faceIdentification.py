@@ -21,7 +21,7 @@ def CascadeDetect(cascPath=r'./res/haarcascade_frontalface_default.xml'):
 
 def main():
     cv2.useOptimized()
-    file =  r'./res/trump.jpg'#r'./res/Lenna.png' #obama.jpg
+    file =  r'./res/trump.jpg'##obama.jpg #r'./res/Lenna.png'  #
     
     print('Number of parameter:', len(sys.argv))
     print('Parameters:', str(sys.argv))
@@ -32,14 +32,15 @@ def main():
     img = loadImg(file,mode=cv2.IMREAD_COLOR) # IMREAD_GRAYSCALE IMREAD_COLOR
 
     faceROI = CascadeDetect()
-    faceR=faceROI.getDetectImg(img)
-    face = faceROI.detecvFaceImgOne(img)
+    faceR=faceROI.getDetectImg(img) #reSize=(newW,newH)
+    #print('faceR.shape=',faceR.shape)
+    face = faceROI.detecvFaceImgOne(img.copy()) #reSize=(newW,newH)
     faceGray = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
 
     img = changeBgr2Rbg(img)
     faceR = changeBgr2Rbg(faceR)
-    #face = changeBgr2Rbg(face)
-    #faceGray = changeBgr2Rbg(faceGray)
+    face = changeBgr2Rbg(face)
+    faceGray = changeBgr2Rbg(faceGray)
     
     ls,names = [],[]
     ls.append(img),names.append('orignal')
@@ -47,10 +48,10 @@ def main():
     ls.append(face),names.append('face')
     ls.append(faceGray),names.append('faceGray')
 
-    plotImagList(ls,names)
+    plotImagList(ls,names,showTitle=False,showticks=True)
 
     #faceGray = resizeImg(faceGray,newW,newH)
-    writeImg(face,'./res/myface_.png')
+    writeImg(face,'./res/Lenna1.png')
     #writeImg(faceGray,'./res/myface_gray.png')
 
 if __name__=="__main__":

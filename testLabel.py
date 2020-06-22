@@ -113,8 +113,8 @@ def showPredictImage():
     plotImagList(imgList,nameList,showticks=False,showTitle=False)
     
 def showPredictOutdatasetImage():
-    file1 = r'.\res\\' + 'Lenna.png'
-    file2 = r'.\res\\' + 'obama.png' #obama.png
+    file1 = r'.\res\\' + 'anna.png'
+    file2 = r'.\res\\' + 'trump.png' #obama.png
     
     predictImg1 = testFaceLabelPredict(file1)   
     predictImg2 = testFaceLabelPredict(file2)

@@ -22,12 +22,13 @@ def UpdatePtsToLocation(pts,H,W):
         pts[i][1] = pts[i][1]*H
     return pts
 
-def calculateFeature(pts,H,W,file=r'test.pts'):
+def calculateFeature(pts,H,W,file=r'./res/test.pts'):
     pts = UpdatePtsToLocation(pts,H,W)
     
     #print(pts)
     
-    writeAnotationFile(file,pts)
+    #writeAnotationFile(file,pts)
+    
     pts = np.array(pts)
     #print(pts.shape)
     

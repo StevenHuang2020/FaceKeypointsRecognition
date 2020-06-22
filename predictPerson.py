@@ -48,7 +48,7 @@ def main():
     
     showimage(testFaceLabelPts(img,pts,locCod=False))
     if 1:
-        feature = np.array(calculateFeature(pts,H,W,'predict.pts'))
+        feature = np.array(calculateFeature(pts,H,W,r'./res/predict.pts'))
     else:
         feature = pts.reshape(1,136)
     print('feature=',len(feature),feature)

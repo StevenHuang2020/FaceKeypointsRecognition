@@ -62,6 +62,7 @@ def plotImagList(imgList,nameList,gray=False,showTitle=True,showticks=True):
             ax.set_yticks([])
             ax.set_xticks([])
         
+        ax.set_aspect('equal')
         #ax.margins(0, 0) 
         #ax.xaxis.set_major_locator(plt.NullLocator())
         #ax.yaxis.set_major_locator(plt.NullLocator())
