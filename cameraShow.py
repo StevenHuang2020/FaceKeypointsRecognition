@@ -16,7 +16,7 @@ def resizeImg(img,NewW,NewH):
 def preditImgKeyPoints(img, model):
     global newW
     global newH
-    img = resizeImg(img,newW,newH)
+    #img = resizeImg(img,newW,newH)
     pts = preditImgPts(img,model)
     return testFaceLabelPts(img,pts)
 
@@ -54,7 +54,7 @@ def showCamera():
         #Display the resulting frame
         
         #frame=CascadeDetect().getDetectImg(frame)
-        face = CascadeDetect().detecvFaceImgOne(frame)
+        face = CascadeDetect().detecvFaceImgOne(frame,reSize=(newW,newH))
         if face is None:
             continue
         
