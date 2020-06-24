@@ -9,6 +9,5 @@ Facial key-points detection by using CNN model. Dataset：FG-Net
 #### Keypoints regresiion
 <br/>
 <img src="images/Figure_2.png" width="320" height="240">
-<img src="images/Figure_7.png" width="320" height="240">
 <img src="images/Figure_12.png" width="320" height="240">
 <img src="images/Figure_13.png" width="320" height="240">
