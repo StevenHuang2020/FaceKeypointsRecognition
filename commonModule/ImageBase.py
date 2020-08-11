@@ -21,7 +21,7 @@ def writeImg(img,filePath):
     cv2.imwrite(filePath,img)
 
 def infoImg(img,str='image:'):
-    return(str,'shape:',img.shape,'size:',img.size,'dims=',img.ndim,'dtype:',img.dtype)
+    return print(str,'shape:',img.shape,'size:',img.size,'dims=',img.ndim,'dtype:',img.dtype)
 
 def grayImg(img):
     return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -56,6 +56,8 @@ def plotImg(img):
 def getImgHW(img):
     return img.shape[0],img.shape[1]
 
+def distanceImg(img1,img2):
+    return np.sqrt(np.sum(np.square(img1 - img2)))
 
 """-----------------------operation start-------"""
 def calcAndDrawHist(img,color=[255,255,255]): #color histgram
@@ -157,7 +159,7 @@ class ImageBase:
 
     
     def infoImg(self,str='image:'):
-        return(str,'shape:',self.image.shape,'size:',self.image.size,'dtype:','dims=',self.image.ndim,self.image.dtype)
+        return print(str,'shape:',self.image.shape,'size:',self.image.size,'dtype:','dims=',self.image.ndim,self.image.dtype)
     
     def getImagChannel(self):
         if self.image.ndim == 3: #color r g b channel

@@ -1,4 +1,4 @@
-#Steven load facial images
+#Steven
 import os
 import cv2
 import numpy as np 

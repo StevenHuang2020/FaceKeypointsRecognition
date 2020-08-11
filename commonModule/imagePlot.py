@@ -36,7 +36,6 @@ def plotImagList2(imgList,nameList,gray=False,showTitle=True,showticks=True):
             ax.margins(0, 0) 
             #ax.xaxis.set_major_locator(plt.NullLocator())
             #ax.yaxis.set_major_locator(plt.NullLocator())
-   
     
     #plt.grid(True)
     plt.tight_layout(pad=0)
@@ -74,9 +73,9 @@ def plotImagList(imgList,nameList,gray=False,showTitle=True,showticks=True):
 
 def main():
     #file = r'./res/obama.jpg'#'./res/Lenna.png' #
-    #img = ImageBase(file,mode=cv2.IMREAD_GRAYSCALE) # IMREAD_GRAYSCALE IMREAD_COLOR
-    #print(img.infoImg())
-    #showimage(img.binaryImage(thresHMin=50,thresHMax=150))
+    #img = loadImg(file,mode=cv2.IMREAD_GRAYSCALE) # IMREAD_GRAYSCALE IMREAD_COLOR
+    #infoImg(img)
+    #showimage(binaryImage2(img,thresHMin=50,thresHMax=150))
     pass
 
 if __name__=='__main__':

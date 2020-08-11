@@ -19,7 +19,7 @@ def showimage(img,str='image',autoSize=False):
 def main():
     file = './res/Lenna.png' #r'./res/obama.jpg'#
     img = loadImg(file,mode=cv2.IMREAD_GRAYSCALE) # IMREAD_GRAYSCALE IMREAD_COLOR
-    #print(infoImg())
+    #infoImg()
     img1 = binaryImage2(img,thresHMin=50,thresHMax=150)
     img2 = binaryImage2(img,thresHMin=50,thresHMax=100)
     img3 = thresHoldImage(img,mode = cv2.THRESH_BINARY)

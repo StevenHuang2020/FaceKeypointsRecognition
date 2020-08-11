@@ -52,14 +52,14 @@ def calculateFeature(pts,H,W,file=r'./res/test.pts'):
     F_EyeFissure  = calculateRatio(pts,28,30,27,29)
     F_VermilionHeight = calculateRatio(pts,51,66,66,57)
     F_MouthFaceWidth = calculateRatio(pts,48,54,0,14)
-    F_Noise1 = calculateRatio(pts,39,46,39,41)
-    F_Noise2 = calculateRatio(pts,39,40,39,41)
-    F_Noise3 = calculateRatio(pts,39,38,39,41)
-    F_Noise4 = calculateRatio(pts,39,38,67,41)
-    F_Noise5 = calculateRatio(pts,39,41,67,41)
-    #print('name:',name,'Features=',F_Facial_Index,F_Mandibular_Index,F_Intercanthal,F_OrbitalWidth,F_EyeFissure,F_VermilionHeight,F_MouthFaceWidth,F_Noise1,F_Noise2,F_Noise3,F_Noise4,F_Noise5)
+    F_Nose1 = calculateRatio(pts,39,46,39,41)
+    F_Nose2 = calculateRatio(pts,39,40,39,41)
+    F_Nose3 = calculateRatio(pts,39,38,39,41)
+    F_Nose4 = calculateRatio(pts,39,38,67,41)
+    F_Nose5 = calculateRatio(pts,39,41,67,41)
+    #print('name:',name,'Features=',F_Facial_Index,F_Mandibular_Index,F_Intercanthal,F_OrbitalWidth,F_EyeFissure,F_VermilionHeight,F_MouthFaceWidth,F_Nose1,F_Nose2,F_Nose3,F_Nose4,F_Nose5)
     
-    return [F_Facial_Index,F_Mandibular_Index,F_Intercanthal,F_OrbitalWidth,F_EyeFissure,F_VermilionHeight,F_MouthFaceWidth,F_Noise1,F_Noise2,F_Noise3,F_Noise4,F_Noise5]
+    return [F_Facial_Index,F_Mandibular_Index,F_Intercanthal,F_OrbitalWidth,F_EyeFissure,F_VermilionHeight,F_MouthFaceWidth,F_Nose1,F_Nose2,F_Nose3,F_Nose4,F_Nose5]
 
 
 dbFile = r'.\db\facial.csv'
@@ -71,7 +71,7 @@ def makeDb():
     
     imgPath = r'E:\opencv\project\facialRecognition\db\recognitionDb'
     df = pd.DataFrame()
-    #columns = ['F_Facial_Index', 'F_Mandibular_Index', 'F_Intercanthal','F_OrbitalWidth', 'F_EyeFissure', 'F_VermilionHeight','F_MouthFaceWidth', 'F_Noise1', 'F_Noise2', 'F_Noise3', 'F_Noise4','F_Noise5']
+    #columns = ['F_Facial_Index', 'F_Mandibular_Index', 'F_Intercanthal','F_OrbitalWidth', 'F_EyeFissure', 'F_VermilionHeight','F_MouthFaceWidth', 'F_Nose1', 'F_Nose2', 'F_Nose3', 'F_Nose4','F_Nose5']
     columns = ['F_Facial_Index', 'F_Mandibular_Index', 'F_Intercanthal','F_OrbitalWidth', 'F_EyeFissure', 'F_VermilionHeight','F_MouthFaceWidth']
     
     for i in pathsFiles(imgPath,'jpg'):

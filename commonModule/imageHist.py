@@ -3,7 +3,7 @@
 import cv2.cv2 as cv2 #pip install opencv-python
 import matplotlib.pyplot as plt
 
-from imageBase import ImageBase
+from ImageBase import *
 from matplotHist import plotHistImg, getImgHist, getImgHist256Img
 
 def plotImagHistListImgHist256(imgList):
@@ -56,8 +56,6 @@ def plotImgHist256Img(img):
         break
 
 def plotImagAndHist4(img):  #must color img
-    b,g,r = cv2.split(img)       # get b,g,r
-    img = cv2.merge([r,g,b])     # switch it to rgb
     imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     imgList=[]
@@ -66,9 +64,6 @@ def plotImagAndHist4(img):  #must color img
     return plotImagHistListImg(imgList)
 
 def plotImagAndHist(img):
-    b,g,r = cv2.split(img)       # get b,g,r
-    img = cv2.merge([r,g,b])     # switch it to rgb
-
     plt.subplot(1, 2, 1)    
     plt.imshow(img)
 
@@ -91,26 +86,26 @@ def showimage(img,str='image',autoSize=False):
     cv2.destroyAllWindows()
 
 def main():
-    file = r'./res/obama.jpg'#'./res/Lenna.png' #
-    img = ImageBase(file,mode=cv2.IMREAD_COLOR) # IMREAD_GRAYSCALE IMREAD_COLOR
-    print(img.infoImg())
-    #img.showimage(autoSize=False)
-    #img.plotImg()
-    #showimage(img.calcAndDrawHist())
-    #showimage(img.thresHoldImage())
-    #img.showimage()
-    
-    #plotHistImg(img.image)
-    #plotImagAndHist(img.image)
-    #plotImagAndHist4(img.image)
-    
-    imgList=[]
-    imgGray = cv2.cvtColor(img.image, cv2.COLOR_BGR2GRAY)
-    imgList.append(img.image)
-    imgList.append(imgGray)
-    imgList.append(img.equalizedHist(imgGray))
+    file = './res/Lenna.png' #r'./res/obama.jpg'#
+    img = loadImg(file,mode=cv2.IMREAD_COLOR) # IMREAD_GRAYSCALE IMREAD_COLOR
+    infoImg(img)
+    #showimage(img,autoSize=False)
+    #plotImg(img)
 
-    #plotImagHistListImg(imgList)
+    #showimage(calcAndDrawHist(img))
+    #showimage(thresHoldImage(img))
+       
+    #plotHistImg(img)
+    #plotImagAndHist(img)
+    #plotImagAndHist4(img)
+  
+    imgList=[]
+    imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    imgList.append(img)
+    imgList.append(imgGray)
+    imgList.append(equalizedHist(imgGray))
+
+    plotImagHistListImg(imgList)
     plotImagHistListImgHist256(imgList)
 
 if __name__=='__main__':
